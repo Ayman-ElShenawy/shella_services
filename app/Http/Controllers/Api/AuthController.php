@@ -18,19 +18,31 @@ class AuthController extends Controller
             $request->validate([
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required|confirmed',
+                'password' => 'required|confirmed|min:8',
                 'phone_number' => 'required|digits:10|unique:users,phone_number',
                 'address' => 'required',
                 "role" => "in:customer,admin,company,worker",
+                "photo" => "mimes:jpg,png,jpeg|nullable",
 
             ]);
+            if ($request->has('photo')) {
+                $file = $request->file('photo');
+                $file_extension =  $file->getClientOriginalExtension();
+                $file_name = time() . "." . $file_extension;
+                $path = 'images/user/';
+                $file->move($path, $file_name);
+                $image_path = $path . $file_name;
+            } else {
+                $image_path = 'images/defulte.png';
+            }
             $user = User::create([
                 "email" => $request->email,
                 "password" => bcrypt($request->password),
                 "name" => $request->name,
                 "phone_number" => $request->phone_number,
                 "role" => $request->role ?? 'customer',
-                "address" => $request->address
+                "address" => $request->address,
+                'photo' => Url($image_path)
 
             ]);
 
@@ -38,6 +50,8 @@ class AuthController extends Controller
             if ($user) {
                 return response()->json(['status' => 'success', 'message' => 'Successfully inserted data', 'data' => $user], 201);
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['status' => 'error', 'message' => $e->errors()], 400);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -56,6 +70,8 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('apiToken')->plainTextToken;
             return response()->json(['status' => 'success', 'token' => $token, 'role' => $user->role], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['status' => 'error', 'message' => $e->errors()], 400);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
@@ -80,6 +96,8 @@ class AuthController extends Controller
                 $user->currentAccessToken()->delete();
                 return response()->json(['status' => 'sucsses', 'message' => 'logout sucssesfully'], 200);
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['status' => 'error', 'message' => $e->errors()], 400);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
@@ -105,6 +123,28 @@ class AuthController extends Controller
             $user->update(['password' => bcrypt($validatedData['new_password'])]);
 
             return response()->json(['status' => 'success', 'message' => 'Password changed successfully'], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['status' => 'error', 'message' => $e->errors()], 400);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+    public function changePhoneNumber(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'password' => 'required',
+                "phone_number" => "required|digits:10|unique:users,phone_number",
+            ]);
+            $user = Auth::user();
+            if (!$user) {
+                return response()->json(['status' => 'error', 'message' => 'User not authenticated'], 401);
+            }
+            if (!Hash::check($validatedData['password'], $user->password)) {
+                return response()->json(['status' => 'error', 'message' => ' password does not Valid'], 400);
+            }
+            $user->update(['phone_number' => $validatedData['phone_number']]);
+            return response()->json(['status' => 'success', 'message' => 'PhoneNumber changed successfully'], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['status' => 'error', 'message' => $e->errors()], 400);
         } catch (Exception $e) {
