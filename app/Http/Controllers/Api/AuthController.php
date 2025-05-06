@@ -16,11 +16,11 @@ class AuthController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'required',
+                "name"=>'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|confirmed|min:8',
                 'phone_number' => 'required|digits:10|unique:users,phone_number',
-                'address' => 'required',
+                'address' => 'required|string',
                 "role" => "in:customer,admin,company,worker",
                 "photo" => "mimes:jpg,png,jpeg|nullable",
 
@@ -36,9 +36,9 @@ class AuthController extends Controller
                 $image_path = 'images/defulte.png';
             }
             $user = User::create([
+                "name"=>$request->name,
                 "email" => $request->email,
                 "password" => bcrypt($request->password),
-                "name" => $request->name,
                 "phone_number" => $request->phone_number,
                 "role" => $request->role ?? 'customer',
                 "address" => $request->address,

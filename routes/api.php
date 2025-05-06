@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\ImageController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ServiceInformationController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'Register');
@@ -33,6 +33,6 @@ Route::middleware('auth:sanctum')->group(function (){
 route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('service', ServiceController::class);
-
+    Route::apiResource('serviceinformation', ServiceInformationController::class);
 });
 
