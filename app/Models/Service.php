@@ -25,10 +25,7 @@ class Service extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function orders():HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
+
     public function images():HasMany
     {
         return $this->hasMany(Image::class);

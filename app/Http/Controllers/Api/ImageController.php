@@ -22,16 +22,8 @@ class ImageController extends Controller
     $entity = null;
     $filePath = '';
 
-    if ($request->get('type') == 'product') {
-        $entity = Product::find($id);
-        if (!$entity) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Product not found',
-            ], 404);
-        }
-        $filePath = 'images/product/';
-    } elseif ($request->get('type') == 'service') {
+
+     if ($request->get('type') == 'service') {
         $entity = Service::find($id);
         if (!$entity) {
             return response()->json([

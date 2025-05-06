@@ -15,8 +15,5 @@ class Category extends Model
     {
         return $this->hasMany(Service::class);
     }
-    public function products():HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
 }
+

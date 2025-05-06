@@ -14,10 +14,7 @@ class Image extends Model
         'user_id',
     ];
 
-    public function product():BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
+
 
     public function service():BelongsTo
     {

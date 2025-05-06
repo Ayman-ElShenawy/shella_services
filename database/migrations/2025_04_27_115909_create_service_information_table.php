@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('service_id')->constrained()->cascadeOnDelete();
             $table->text('description');
+            $table->double('start_price')->default(0);
+            $table->double('provider_price')->default(0);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('location_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('image_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

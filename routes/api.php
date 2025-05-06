@@ -33,7 +33,6 @@ Route::middleware('auth:sanctum')->group(function (){
 route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('category', CategoryController::class);
     Route::apiResource('service', ServiceController::class);
-    Route::apiResource('product', ProductController::class);
-    Route::apiResource('order', OrderController::class);
+
 });
 
