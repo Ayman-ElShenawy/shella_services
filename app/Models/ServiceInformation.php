@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ServiceInformation extends Model
 {
@@ -12,7 +13,9 @@ class ServiceInformation extends Model
         'description',
         'user_id',
         'location_id',
-        'image_id',
+        'start_price',
+        'provider_price'
+
     ];
 
     public function service(): BelongsTo{
@@ -24,7 +27,7 @@ class ServiceInformation extends Model
     public function location(): BelongsTo{
         return $this->belongsTo(Location::class);
     }
-    public function image(): BelongsTo{
-        return $this->belongsTo(Image::class);
+    public function image(): HasMany{
+        return $this->hasMany(Image::class);
     }
 }

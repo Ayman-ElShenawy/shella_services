@@ -11,7 +11,6 @@ class Rating extends Model
         'rating_value',
         'user_id',
         'service_id',
-        'product_id',
         'comment'
     ];
     public function service():BelongsTo{

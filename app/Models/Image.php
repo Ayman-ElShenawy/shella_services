@@ -9,21 +9,24 @@ class Image extends Model
 {
     protected $fillable = [
         'image',
-        'product_id',
         'service_id',
         'user_id',
+        'service_information_id'
     ];
 
 
 
-    public function service():BelongsTo
+    public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }
 
-    public function user():BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    
+    public function Service_information(): BelongsTo
+    {
+        return $this->belongsTo(ServiceInformation::class);
+    }
 }
