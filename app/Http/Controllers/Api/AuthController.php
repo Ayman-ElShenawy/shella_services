@@ -16,7 +16,8 @@ class AuthController extends Controller
     {
         try {
             $request->validate([
-                "name"=>'required|string|max:255',
+                "first_name"=>'required|string|max:255',
+                "last_name"=>'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|confirmed|min:8',
                 'phone_number' => 'required|digits:10|unique:users,phone_number',
@@ -36,7 +37,8 @@ class AuthController extends Controller
                 $image_path = 'images/defulte.png';
             }
             $user = User::create([
-                "name"=>$request->name,
+                "first_name"=>$request->first_name,
+                "last_name"=>$request->last_name,
                 "email" => $request->email,
                 "password" => bcrypt($request->password),
                 "phone_number" => $request->phone_number,
@@ -61,10 +63,10 @@ class AuthController extends Controller
     {
         try {
             $validate = $request->validate([
-                "email" => "required|email",
+                'phone_number' => 'required|digits:10',
                 "password" => "required|min:8",
             ]);
-            if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            if (!Auth::attempt(['phone_number' => $request->phone_number,'password' => $request->password])) {
                 return response()->json(['status' => 'error', 'message' => 'unbale login invalid'], 401);
             }
             $user = Auth::user();

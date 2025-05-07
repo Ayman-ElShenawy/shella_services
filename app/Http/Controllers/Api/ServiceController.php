@@ -41,7 +41,6 @@ class ServiceController extends Controller
             'category_id'=>'required|exists:categories,id',
             'name'=>'required|string|max:265',
             'description'=>'required|string|max:265',
-            'price'=>'required|numeric',
         ]);
         if($validator->fails())
         {
@@ -56,7 +55,6 @@ class ServiceController extends Controller
                 'category_id'=>$request->category_id,
                 'name'=>$request->name,
                 'description'=>$request->description,
-                'price'=>$request->price,
             ]);
             if($service){
                 return response()->json([
@@ -102,7 +100,6 @@ class ServiceController extends Controller
             'category_id'=>'required|exists:categories,id',
             'name'=>'required|string|max:265',
             'description'=>'required|string|max:265',
-            'price'=>'required|numeric',
         ]);
         if($validator->fails())
         {
@@ -118,7 +115,6 @@ class ServiceController extends Controller
                     'category_id'=>$request->category_id,
                     'name'=>$request->name,
                     'description'=>$request->description,
-                    'price'=>$request->price,
                 ]);
                 return response()->json([
                     'status'=>200,

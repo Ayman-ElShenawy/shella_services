@@ -42,9 +42,7 @@ class ServiceInformationController extends Controller
         $validator = Validator::make($request->all(), [
             'service_id' => 'required|exists:services,id',
             'location_id' => 'required|exists:locations,id',
-            'image_id' => 'required|exists:images,id',
             'description' => 'required|string|max:255',
-
             'start_price' => 'required|numeric|min:0',
             'provider_price' => "required|numeric|min:0",
         ]);
@@ -70,7 +68,6 @@ class ServiceInformationController extends Controller
                 'user_id' => Auth::user()->id,
                 'service_id' => $request->service_id,
                 'location_id' => $request->location_id,
-                'image_id' => $request->image_id,
                 'description' => $request->description,
                 'start_price' => $deducted,
                 'provider_price' => $request->provider_price,
@@ -118,9 +115,7 @@ class ServiceInformationController extends Controller
 
             'service_id' => 'required|exists:services,id',
             'location_id' => 'required|exists:locations,id',
-            'image_id' => 'required|exists:images,id',
             'description' => 'required|string|max:255',
-
             'start_price' => 'required|numeric|min:0',
             'provider_price' => "required|numeric|min:0",
         ]);
@@ -135,7 +130,6 @@ class ServiceInformationController extends Controller
                 $serviceinformation->update([
                     'service_id' => $request->service_id,
                     'location_id' => $request->location_id,
-                    'image_id' => $request->image_id,
                     'description' => $request->description,
                     'start_price' => $request->start_price,
                     'provider_price' => $request->provider_price,
