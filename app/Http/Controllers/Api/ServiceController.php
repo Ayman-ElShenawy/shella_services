@@ -41,6 +41,7 @@ class ServiceController extends Controller
             'category_id'=>'required|exists:categories,id',
             'name'=>'required|string|max:265',
             'description'=>'required|string|max:265',
+            'status' => 'in:active,notactive'
         ]);
         if($validator->fails())
         {
@@ -55,11 +56,13 @@ class ServiceController extends Controller
                 'category_id'=>$request->category_id,
                 'name'=>$request->name,
                 'description'=>$request->description,
+                'status' =>$request->status ?? 'active'
             ]);
             if($service){
                 return response()->json([
                     'status'=>200,
                     'message'=>"Service Added Successfully",
+                    'data' =>$service
                 ],200);
             }
             else{
@@ -100,6 +103,7 @@ class ServiceController extends Controller
             'category_id'=>'required|exists:categories,id',
             'name'=>'required|string|max:265',
             'description'=>'required|string|max:265',
+             'status' =>$request->status ?? 'active'
         ]);
         if($validator->fails())
         {
@@ -115,6 +119,7 @@ class ServiceController extends Controller
                     'category_id'=>$request->category_id,
                     'name'=>$request->name,
                     'description'=>$request->description,
+                    'status' =>$request->status 
                 ]);
                 return response()->json([
                     'status'=>200,
