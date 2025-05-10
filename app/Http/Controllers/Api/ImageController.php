@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\ServiceInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +22,16 @@ class ImageController extends Controller
     $imageData = [];
     $entity = null;
     $filePath = '';
-
+    if ($request->get('type') == 'service_information') {
+        $entity = ServiceInformation::find($id);
+        if (!$entity) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Service not found',
+            ], 404);
+        }
+        $filePath = 'images/service_information/';
+    }
 
      if ($request->get('type') == 'service') {
         $entity = Service::find($id);
@@ -40,7 +50,7 @@ class ImageController extends Controller
 
         $imagePath = $filePath . $fileName;
         $imageData[] = [
-            'product_id' => $request->get('type') == 'product' ? $entity->id : null,
+            'service_information_id' => $request->get('type') == 'service_information' ? $entity->id : null,
             'service_id' => $request->get('type') == 'service' ? $entity->id : null,
             'user_id' => Auth::user()->id,
             'image' => url($imagePath),
