@@ -13,6 +13,7 @@ class Service extends Model
         'description',
         'category_id',
         'user_id',
+        'status',
     ];
 
     public function category():BelongsTo

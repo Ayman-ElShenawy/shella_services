@@ -5,23 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Image extends Model
+class Video extends Model
 {
     protected $fillable = [
-        'image',
-        'service_id',
+        's_information_id',
         'user_id',
-        'service_information_id'
+        'video',
     ];
 
-
-
-    public function service(): BelongsTo
-    {
-        return $this->belongsTo(Service::class);
-    }
-
-    public function user(): BelongsTo
+        public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -29,5 +21,4 @@ class Image extends Model
     {
         return $this->belongsTo(ServiceInformation::class);
     }
-        
 }

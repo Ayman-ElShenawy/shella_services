@@ -1,14 +1,15 @@
 <?php
 
-
-
+use App\Http\Controllers\Api\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\ServiceInformationController;
+use App\Http\Controllers\Api\VideoController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'Register');
@@ -20,6 +21,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::post('upload_image/{Id}',[ImageController::class,'uploadImage'])->middleware('auth:sanctum');
+Route::delete('delete_image/{id}',[ImageController::class,'destroy'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function (){
 
@@ -35,4 +37,19 @@ route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('service', ServiceController::class);
     Route::apiResource('serviceinformation', ServiceInformationController::class);
 });
+Route::controller(AdminController::class)->group(function(){
+    Route::get('get_all_provider','get_all_provider');
+    Route::get('get_service','get_service');
+    Route::get('get_masseges','get_masseges');
+});
+Route::controller(VideoController::class)->group(function(){
+    Route::post('store_video/{id}', 'store')->middleware('auth:sanctum');
+    Route::delete('delete_video/{id}', 'destroy')->middleware('auth:sanctum');
+});
+Route::controller(LocationController::class)->group(function(){
+    Route::post('store_location', 'store')->middleware('auth:sanctum');
+    Route::put('update_location/{id}', 'update')->middleware('auth:sanctum');
+    
+});
+
 

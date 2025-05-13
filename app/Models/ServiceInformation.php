@@ -30,4 +30,9 @@ class ServiceInformation extends Model
     public function image(): HasMany{
         return $this->hasMany(Image::class);
     }
+    public function video() : HasMany
+    {
+        return $this->hasMany(Video::class);
+    }
+        
 }

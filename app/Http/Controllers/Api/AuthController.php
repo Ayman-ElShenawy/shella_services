@@ -22,7 +22,7 @@ class AuthController extends Controller
                 'password' => 'required|confirmed|min:8',
                 'phone_number' => 'required|digits:10|unique:users,phone_number',
                 'address' => 'required|string',
-                "role" => "in:customer,admin,company,worker",
+                "role" => "in:company,worker",
                 "photo" => "mimes:jpg,png,jpeg|nullable",
 
             ]);
@@ -42,7 +42,7 @@ class AuthController extends Controller
                 "email" => $request->email,
                 "password" => bcrypt($request->password),
                 "phone_number" => $request->phone_number,
-                "role" => $request->role ?? 'customer',
+                "role" => $request->role,
                 "address" => $request->address,
                 'photo' => Url($image_path)
 

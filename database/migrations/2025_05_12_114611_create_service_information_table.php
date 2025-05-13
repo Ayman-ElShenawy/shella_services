@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('service_information', function (Blueprint $table) {
             $table->id();
             $table->foreignId('service_id')->constrained()->cascadeOnDelete();
-            $table->text('description');
-            $table->double('start_price')->default(0);
-            $table->double('provider_price')->default(0);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('location_id')->constrained()->cascadeOnDelete();
+            $table->text('description');
+            $table->double('start_price');
+            $table->double('provider_price');
             $table->timestamps();
         });
     }
