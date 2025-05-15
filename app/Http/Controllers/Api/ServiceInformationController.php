@@ -78,6 +78,7 @@ class ServiceInformationController extends Controller
                 return response()->json([
                     'status' => 200,
                     'message' => "Service Information added successfully",
+                    'data' => $serviceinformation
                 ], 200);
             } else {
                 return response()->json([

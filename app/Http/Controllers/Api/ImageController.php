@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Image;
-use App\Models\Product;
 use App\Models\Service;
 use App\Models\ServiceInformation;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Node\Expr\FuncCall;
 
 class ImageController extends Controller
 {
@@ -70,18 +69,25 @@ class ImageController extends Controller
     public function destroy($id)
     {
         try {
-            $image = Image::where('S_information_id', $id)->first('s_information_id');
-            if (!$image) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Image not found',
-                ], 404);
+            $images = Image::where('s_information_id', $id)->get();
+
+            foreach ($images as $image) {
+                $imagePath = public_path(str_replace(url('/'), '', $image->image));
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+                $image->delete();
             }
-            $image->delete();
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Image has been deleted successfully',
+                'message' => 'Images have been deleted successfully',
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Images not found',
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',

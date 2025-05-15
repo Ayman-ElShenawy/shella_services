@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ServiceInformation;
 use App\Models\Video;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -33,7 +34,7 @@ class VideoController extends Controller
             $file->move(public_path($filePath), $fileName);
 
             $videoPath = $filePath . $fileName;
-            Video::create([
+            $video = Video::create([
                 'video' => url($videoPath),
                 's_information_id' => $entity->id,
                 'user_id' => Auth::user()->id
@@ -42,6 +43,7 @@ class VideoController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Video has been uploaded successfully',
+                'data' => $video
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -55,22 +57,26 @@ class VideoController extends Controller
             ], 422);
         }
     }
-
-    public function destroy($id)
+    public function destroy(int $serviceInformationId)
     {
         try {
-            $video = Video::find($id);
-            if (!$video) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Video not found',
-                ], 404);
+            $video = Video::where('s_information_id', $serviceInformationId)->firstOrFail();
+
+            $videoPath = public_path(str_replace(url('/'), '', $video->video));
+            if (file_exists($videoPath)) {
+                unlink($videoPath);
             }
+
             $video->delete();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Video has been deleted successfully',
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Video not found',
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',

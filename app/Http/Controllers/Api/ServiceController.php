@@ -56,7 +56,7 @@ class ServiceController extends Controller
                 'category_id'=>$request->category_id,
                 'name'=>$request->name,
                 'description'=>$request->description,
-                'status' =>$request->status ?? 'active'
+                'status' =>$request->status ?? 'notactive'
             ]);
             if($service){
                 return response()->json([
